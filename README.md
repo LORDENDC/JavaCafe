@@ -24,34 +24,40 @@ Permite gerenciar produtos, controlar estoque e registrar vendas de forma simple
 ---
 
 ##  Estrutura do projeto
-src/
-├── model/
-│ ├── Produto
-│ ├── ItemPedido
-│ └── Pedido
-
-
-├── service/
-│ ├── GerenciadorEstoque
-│ └── GerenciadorVendas
-
-
-├── exception/
-│ └── OutOfStockException
-
-
-├── persistence/
-│ └── ArquivoUtil
-
-
-├── ui/
-│ ├── TelaPrincipal
-│ ├── PainelEstoque
-│ └── PainelPedidos
+...
+JavaCafe/
 │
+├── src/
+│   ├── model/
+│   │   ├── Produto.java
+│   │   ├── ItemPedido.java
+│   │   └── Pedido.java
+│   │
+│   ├── service/
+│   │   ├── GerenciadorEstoque.java
+│   │   └── GerenciadorVendas.java
+│   │
+│   ├── exception/
+│   │   └── OutOfStockException.java
+│   │
+│   ├── persistence/
+│   │   └── ArquivoUtil.java
+│   │
+│   ├── ui/
+│   │   ├── TelaPrincipal.java
+│   │   ├── PainelEstoque.java
+│   │   └── PainelPedidos.java
+│   │
+│   └── Main.java
+│
+├── data/
+│   ├── produtos.csv
+│   └── vendas.csv
+│
+├── README.md
+└── .gitignore
 
-└── Main
-
+...
 ---
 
 ## 📂 Dados
