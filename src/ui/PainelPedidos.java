@@ -42,8 +42,8 @@ public class PainelPedidos extends JPanel {
 
         campoQuantidade = new JTextField(5);
 
-        JButton btnAdd = new JButton("Ajouter");
-        JButton btnFinal = new JButton("Finaliser");
+        JButton btnAdd = new JButton("Adicionar");
+        JButton btnFinal = new JButton("Finalizar");
 
         topo.add(comboProdutos);
         topo.add(campoQuantidade);
