@@ -56,15 +56,20 @@ public class PainelEstoque extends JPanel {
         panel.repaint();
     }
 
-    // 🔥 SIMPLE & WORKING IMAGE LOADER
+    // 🔥 CLASSLOADER FIX (PROPRE + PRO)
     private JLabel createImage(String fileName) {
 
-        String path = System.getProperty("user.dir") + "/images/" + fileName;
+        java.net.URL url =
+                getClass().getClassLoader().getResource("images/" + fileName);
 
-        ImageIcon icon = new ImageIcon(path);
+        if (url == null) {
+            return new JLabel("[no image]");
+        }
+
+        ImageIcon icon = new ImageIcon(url);
 
         Image img = icon.getImage()
-                .getScaledInstance(150, 100, Image.SCALE_SMOOTH);
+                .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
 
         return new JLabel(new ImageIcon(img));
     }
