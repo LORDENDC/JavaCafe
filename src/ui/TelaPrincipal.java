@@ -1,3 +1,10 @@
+package ui;
+
+import service.GerenciadorEstoque;
+
+import javax.swing.*;
+import java.awt.*;
+
 public class TelaPrincipal extends JFrame {
 
     private GerenciadorEstoque estoque;
@@ -7,7 +14,7 @@ public class TelaPrincipal extends JFrame {
         this.estoque = estoque;
 
         setTitle("Java Café");
-        setSize(800, 500);
+        setSize(900, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
