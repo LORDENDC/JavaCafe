@@ -33,19 +33,22 @@ public class PainelEstoque extends JPanel {
 
             JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-            // IMAGE
-            String imgPath = "images/" + p.getNome().toLowerCase().replace(" ", "") + ".jpg";
+            String fileName = p.getNome()
+                    .toLowerCase()
+                    .replace(" ", "")
+                    + ".jpg";
 
-            ImageIcon icon = new ImageIcon(imgPath);
-            Image img = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+            ImageIcon icon = new ImageIcon("images/" + fileName);
+
+            Image img = icon.getImage()
+                    .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
 
             JLabel imgLabel = new JLabel(new ImageIcon(img));
 
-            // TEXT
             JLabel text = new JLabel(
-                    p.getNome() +
-                    " | €" + p.getPreco() +
-                    " | Stock: " + p.getEstoque()
+                    p.getNome()
+                            + " | €" + p.getPreco()
+                            + " | Stock: " + p.getEstoque()
             );
 
             item.add(imgLabel);
