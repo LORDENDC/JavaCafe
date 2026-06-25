@@ -28,11 +28,33 @@ public class PainelPedidos extends JPanel {
 
         setLayout(new BorderLayout());
 
+        // ===== IMAGES =====
+        JPanel painelImagens = new JPanel(new FlowLayout());
+
+        try {
+
+            ImageIcon cap = new ImageIcon("images/cappuccino.jpg");
+            ImageIcon esp = new ImageIcon("images/espresso.jpg");
+            ImageIcon cro = new ImageIcon("images/croissant.jpg");
+
+            Image capImg = cap.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            Image espImg = esp.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+            Image croImg = cro.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+
+            painelImagens.add(new JLabel(new ImageIcon(capImg)));
+            painelImagens.add(new JLabel(new ImageIcon(espImg)));
+            painelImagens.add(new JLabel(new ImageIcon(croImg)));
+
+        } catch (Exception e) {
+            System.out.println("Impossible de charger les images.");
+        }
+
+        add(painelImagens, BorderLayout.SOUTH);
+
         JPanel topo = new JPanel();
 
         comboProdutos = new JComboBox<>();
 
-        // SAFE LOAD (évite null crash)
         if (estoque != null && estoque.getProdutos() != null) {
             for (Produto p : estoque.getProdutos()) {
                 comboProdutos.addItem(p.getNome());
@@ -62,51 +84,83 @@ public class PainelPedidos extends JPanel {
 
     private void adicionarItem() {
 
-        String nome = (String) comboProdutos.getSelectedItem();
-        int quantidade = Integer.parseInt(campoQuantidade.getText());
+        try {
 
-        Produto produto = estoque.buscarProduto(nome);
+            String nome = (String) comboProdutos.getSelectedItem();
 
-        if (produto == null) return;
+            int quantidade = Integer.parseInt(campoQuantidade.getText());
 
-        if (produto.getEstoque() < quantidade) {
-            JOptionPane.showMessageDialog(this, "Estoque insuficiente!");
-            return;
+            Produto produto = estoque.buscarProduto(nome);
+
+            if (produto == null) {
+                return;
+            }
+
+            if (produto.getEstoque() < quantidade) {
+                JOptionPane.showMessageDialog(this, "Estoque insuficiente!");
+                return;
+            }
+
+            produto.reduzirEstoque(quantidade);
+
+            ItemPedido item = new ItemPedido(produto, quantidade);
+
+            pedidoAtual.adicionarItem(item);
+
+            areaPedido.append(
+                    item.toString()
+                            + " | Stock restant: "
+                            + produto.getEstoque()
+                            + "\n"
+            );
+
+            campoQuantidade.setText("");
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Digite uma quantidade válida!"
+            );
         }
-
-        produto.reduzirEstoque(quantidade);
-
-        ItemPedido item = new ItemPedido(produto, quantidade);
-        pedidoAtual.adicionarItem(item);
-
-        areaPedido.append(item.toString() + "\n");
-
-        campoQuantidade.setText("");
     }
 
     private void finalizarPedido() {
 
         if (pedidoAtual.getItens().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Pedido vazio!");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Pedido vazio!"
+            );
+
             return;
         }
 
         double total = pedidoAtual.getTotal();
 
         StringBuilder recibo = new StringBuilder();
+
         recibo.append("===== RECIBO =====\n\n");
 
         for (ItemPedido item : pedidoAtual.getItens()) {
-            recibo.append(item.toString()).append("\n");
+
+            recibo.append(item.toString())
+                    .append("\n");
         }
 
-        recibo.append("\nTOTAL: ").append(total);
+        recibo.append("\nTOTAL: ")
+                .append(String.format("%.2f", total));
 
-        JOptionPane.showMessageDialog(this, recibo.toString());
+        JOptionPane.showMessageDialog(
+                this,
+                recibo.toString()
+        );
 
         vendas.adicionarPedido(pedidoAtual);
 
         pedidoAtual = new Pedido();
+
         areaPedido.setText("");
     }
 }
