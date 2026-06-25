@@ -5,14 +5,14 @@ Sistema de ponto de venda (POS) desenvolvido em Java com interface Swing.
 
 ---
 
-## 📌 Descrição
+## Descrição
 
 O Java Café é uma aplicação desktop que simula o funcionamento de uma cafeteria.
 Permite gerenciar produtos, controlar estoque e registrar vendas de forma simples.
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - Cadastro de produtos
 - Controle de estoque
@@ -23,28 +23,33 @@ Permite gerenciar produtos, controlar estoque e registrar vendas de forma simple
 
 ---
 
-## 🧱 Estrutura do projeto
+##  Estrutura do projeto
 src/
 ├── model/
 │ ├── Produto
 │ ├── ItemPedido
 │ └── Pedido
-│
+
+
 ├── service/
 │ ├── GerenciadorEstoque
 │ └── GerenciadorVendas
-│
+
+
 ├── exception/
 │ └── OutOfStockException
-│
+
+
 ├── persistence/
 │ └── ArquivoUtil
-│
+
+
 ├── ui/
 │ ├── TelaPrincipal
 │ ├── PainelEstoque
 │ └── PainelPedidos
 │
+
 └── Main
 
 ---
