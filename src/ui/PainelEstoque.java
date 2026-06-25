@@ -64,7 +64,7 @@ public class PainelEstoque extends JPanel {
         ImageIcon icon = new ImageIcon(path);
 
         Image img = icon.getImage()
-                .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                .getScaledInstance(150, 100, Image.SCALE_SMOOTH);
 
         return new JLabel(new ImageIcon(img));
     }
