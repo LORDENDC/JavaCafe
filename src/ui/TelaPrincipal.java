@@ -9,19 +9,24 @@ public class TelaPrincipal extends JFrame {
 
     private GerenciadorEstoque estoque;
 
+    private PainelEstoque painelEstoque;
+    private PainelPedidos painelPedidos;
+
     public TelaPrincipal(GerenciadorEstoque estoque) {
 
         this.estoque = estoque;
 
         setTitle("Java Café");
-        setSize(900, 500);
+        setSize(1000, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // FIX LAYOUT
         setLayout(new GridLayout(1, 2, 10, 10));
 
-        add(new PainelEstoque(estoque));
-        add(new PainelPedidos(estoque));
+        painelEstoque = new PainelEstoque(estoque);
+        painelPedidos = new PainelPedidos(estoque, painelEstoque);
+
+        add(painelEstoque);
+        add(painelPedidos);
     }
 }
