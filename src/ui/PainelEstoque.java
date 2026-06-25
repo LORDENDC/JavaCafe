@@ -38,22 +38,7 @@ public class PainelEstoque extends JPanel {
                     .replace(" ", "")
                     + ".jpg";
 
-            // FIX IMAGE PATH (robuste)
-            java.net.URL imgURL =
-                    getClass().getClassLoader().getResource("images/" + fileName);
-
-            JLabel imgLabel;
-
-            if (imgURL != null) {
-                ImageIcon icon = new ImageIcon(imgURL);
-
-                Image img = icon.getImage()
-                        .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-
-                imgLabel = new JLabel(new ImageIcon(img));
-            } else {
-                imgLabel = new JLabel("[no image]");
-            }
+            JLabel img = createImage(fileName);
 
             JLabel text = new JLabel(
                     p.getNome()
@@ -61,7 +46,7 @@ public class PainelEstoque extends JPanel {
                             + " | Stock: " + p.getEstoque()
             );
 
-            item.add(imgLabel);
+            item.add(img);
             item.add(text);
 
             panel.add(item);
@@ -69,5 +54,18 @@ public class PainelEstoque extends JPanel {
 
         panel.revalidate();
         panel.repaint();
+    }
+
+    // 🔥 SIMPLE & WORKING IMAGE LOADER
+    private JLabel createImage(String fileName) {
+
+        String path = System.getProperty("user.dir") + "/images/" + fileName;
+
+        ImageIcon icon = new ImageIcon(path);
+
+        Image img = icon.getImage()
+                .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+
+        return new JLabel(new ImageIcon(img));
     }
 }
