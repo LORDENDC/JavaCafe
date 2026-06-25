@@ -42,8 +42,8 @@ public class PainelPedidos extends JPanel {
 
         campoQuantidade = new JTextField(5);
 
-        JButton btnAdd = new JButton("Adicionar");
-        JButton btnFinal = new JButton("Finalizar");
+        JButton btnAdd = new JButton("Ajouter");
+        JButton btnFinal = new JButton("Finaliser");
 
         topo.add(comboProdutos);
         topo.add(campoQuantidade);
@@ -55,38 +55,11 @@ public class PainelPedidos extends JPanel {
         // CENTER
         areaPedido = new JTextArea();
         areaPedido.setEditable(false);
-
         add(new JScrollPane(areaPedido), BorderLayout.CENTER);
-
-        // IMAGES (FIXED)
-        JPanel imgPanel = new JPanel(new FlowLayout());
-
-        imgPanel.add(createImage("expresso.jpg"));
-        imgPanel.add(createImage("cappuccino.jpg"));
-        imgPanel.add(createImage("croissant.jpg"));
-
-        add(imgPanel, BorderLayout.SOUTH);
 
         // ACTIONS
         btnAdd.addActionListener(e -> adicionar());
         btnFinal.addActionListener(e -> finalizar());
-    }
-
-    private JLabel createImage(String fileName) {
-
-        java.net.URL imgURL =
-                getClass().getClassLoader().getResource("images/" + fileName);
-
-        if (imgURL == null) {
-            return new JLabel("[no image]");
-        }
-
-        ImageIcon icon = new ImageIcon(imgURL);
-
-        Image img = icon.getImage()
-                .getScaledInstance(120, 120, Image.SCALE_SMOOTH);
-
-        return new JLabel(new ImageIcon(img));
     }
 
     private void adicionar() {
@@ -122,7 +95,7 @@ public class PainelPedidos extends JPanel {
                         + "\n"
         );
 
-        // UPDATE LEFT PANEL (IMPORTANT)
+        // 🔥 UPDATE LEFT PANEL
         painelEstoque.atualizarLista();
 
         campoQuantidade.setText("");
