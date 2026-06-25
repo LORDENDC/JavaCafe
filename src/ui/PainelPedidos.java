@@ -15,50 +15,49 @@ public class PainelPedidos extends JPanel {
     private GerenciadorVendas vendas;
     private Pedido pedidoAtual;
 
+    private PainelEstoque painelEstoque;
+
     private JComboBox<String> comboProdutos;
     private JTextField campoQuantidade;
     private JTextArea areaPedido;
 
-    public PainelPedidos(GerenciadorEstoque estoque) {
+    public PainelPedidos(GerenciadorEstoque estoque, PainelEstoque painelEstoque) {
 
         this.estoque = estoque;
+        this.painelEstoque = painelEstoque;
+
         this.vendas = new GerenciadorVendas();
         this.pedidoAtual = new Pedido();
 
-        setPreferredSize(new Dimension(450, 500));
-
-        setLayout(new BorderLayout(5, 5));
+        setLayout(new BorderLayout(10, 10));
 
         // ===== TOP =====
         JPanel topo = new JPanel();
 
         comboProdutos = new JComboBox<>();
 
-        if (estoque != null && estoque.getProdutos() != null) {
-            for (Produto p : estoque.getProdutos()) {
-                comboProdutos.addItem(p.getNome());
-            }
+        for (Produto p : estoque.getProdutos()) {
+            comboProdutos.addItem(p.getNome());
         }
 
         campoQuantidade = new JTextField(5);
 
-        JButton btnAdicionar = new JButton("Adicionar");
-        JButton btnFinalizar = new JButton("Finalizar Pedido");
+        JButton btnAdd = new JButton("Adicionar");
+        JButton btnFinal = new JButton("Finalizar");
 
         topo.add(comboProdutos);
         topo.add(campoQuantidade);
-        topo.add(btnAdicionar);
-        topo.add(btnFinalizar);
+        topo.add(btnAdd);
+        topo.add(btnFinal);
 
         add(topo, BorderLayout.NORTH);
 
-        // ===== TEXT AREA =====
+        // ===== CENTER =====
         areaPedido = new JTextArea();
         areaPedido.setEditable(false);
-
         add(new JScrollPane(areaPedido), BorderLayout.CENTER);
 
-        // ===== IMAGES (FIXED) =====
+        // ===== IMAGES =====
         JPanel imgPanel = new JPanel(new FlowLayout());
 
         imgPanel.add(createImage("images/expresso.jpg"));
@@ -68,11 +67,10 @@ public class PainelPedidos extends JPanel {
         add(imgPanel, BorderLayout.SOUTH);
 
         // ===== ACTIONS =====
-        btnAdicionar.addActionListener(e -> adicionarItem());
-        btnFinalizar.addActionListener(e -> finalizarPedido());
+        btnAdd.addActionListener(e -> adicionar());
+        btnFinal.addActionListener(e -> finalizar());
     }
 
-    // ===== IMAGE LOADER SAFE =====
     private JLabel createImage(String path) {
 
         ImageIcon icon = new ImageIcon(path);
@@ -83,64 +81,65 @@ public class PainelPedidos extends JPanel {
         return new JLabel(new ImageIcon(img));
     }
 
-    // ===== ADD ITEM =====
-    private void adicionarItem() {
+    private void adicionar() {
 
         String nome = (String) comboProdutos.getSelectedItem();
-        int quantidade;
+
+        int qtd;
 
         try {
-            quantidade = Integer.parseInt(campoQuantidade.getText());
+            qtd = Integer.parseInt(campoQuantidade.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Quantidade inválida!");
+            JOptionPane.showMessageDialog(this, "Quantidade invalida");
             return;
         }
 
-        Produto produto = estoque.buscarProduto(nome);
+        Produto p = estoque.buscarProduto(nome);
 
-        if (produto == null) return;
+        if (p == null) return;
 
-        if (produto.getEstoque() < quantidade) {
-            JOptionPane.showMessageDialog(this, "Estoque insuficiente!");
+        if (p.getEstoque() < qtd) {
+            JOptionPane.showMessageDialog(this, "Stock insuficiente");
             return;
         }
 
-        produto.reduzirEstoque(quantidade);
+        p.reduzirEstoque(qtd);
 
-        ItemPedido item = new ItemPedido(produto, quantidade);
-
+        ItemPedido item = new ItemPedido(p, qtd);
         pedidoAtual.adicionarItem(item);
 
         areaPedido.append(
                 item.toString()
-                        + " | Stock restante: "
-                        + produto.getEstoque()
+                        + " | Stock: "
+                        + p.getEstoque()
                         + "\n"
         );
+
+        // 🔥 IMPORTANT : UPDATE LEFT PANEL
+        painelEstoque.atualizarLista();
 
         campoQuantidade.setText("");
     }
 
-    // ===== FINALIZE =====
-    private void finalizarPedido() {
+    private void finalizar() {
 
         if (pedidoAtual.getItens().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Pedido vazio!");
+            JOptionPane.showMessageDialog(this, "Pedido vazio");
             return;
         }
 
         double total = pedidoAtual.getTotal();
 
-        StringBuilder recibo = new StringBuilder();
-        recibo.append("===== RECIBO =====\n\n");
+        StringBuilder r = new StringBuilder();
+        r.append("===== RECIBO =====\n\n");
 
-        for (ItemPedido item : pedidoAtual.getItens()) {
-            recibo.append(item.toString()).append("\n");
+        for (ItemPedido i : pedidoAtual.getItens()) {
+            r.append(i.toString()).append("\n");
         }
 
-        recibo.append("\nTOTAL: ").append(total);
+        r.append("\nTOTAL: ").append(total);
 
-        JOptionPane.showMessageDialog(this, recibo.toString());
+        JOptionPane.showMessageDialog(this, r.toString());
 
         vendas.adicionarPedido(pedidoAtual);
 
