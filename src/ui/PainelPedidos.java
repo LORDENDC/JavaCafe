@@ -25,9 +25,11 @@ public class PainelPedidos extends JPanel {
         this.vendas = new GerenciadorVendas();
         this.pedidoAtual = new Pedido();
 
-        setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(450, 500));
 
-        // ===== TOP PANEL =====
+        setLayout(new BorderLayout(5, 5));
+
+        // ===== TOP =====
         JPanel topo = new JPanel();
 
         comboProdutos = new JComboBox<>();
@@ -53,9 +55,10 @@ public class PainelPedidos extends JPanel {
         // ===== TEXT AREA =====
         areaPedido = new JTextArea();
         areaPedido.setEditable(false);
+
         add(new JScrollPane(areaPedido), BorderLayout.CENTER);
 
-        // ===== IMAGES PANEL (FIX IMPORTANT) =====
+        // ===== IMAGES (FIXED) =====
         JPanel imgPanel = new JPanel(new FlowLayout());
 
         imgPanel.add(createImage("images/expresso.jpg"));
@@ -69,25 +72,18 @@ public class PainelPedidos extends JPanel {
         btnFinalizar.addActionListener(e -> finalizarPedido());
     }
 
-    // =========================
-    // IMAGE LOADER (IMPORTANT)
-    // =========================
+    // ===== IMAGE LOADER SAFE =====
     private JLabel createImage(String path) {
-        try {
-            ImageIcon icon = new ImageIcon(path);
 
-            Image img = icon.getImage().getScaledInstance(
-                    120, 120, Image.SCALE_SMOOTH
-            );
+        ImageIcon icon = new ImageIcon(path);
 
-            return new JLabel(new ImageIcon(img));
+        Image img = icon.getImage()
+                .getScaledInstance(120, 120, Image.SCALE_SMOOTH);
 
-        } catch (Exception e) {
-            return new JLabel("Image not found");
-        }
+        return new JLabel(new ImageIcon(img));
     }
 
-    // =========================
+    // ===== ADD ITEM =====
     private void adicionarItem() {
 
         String nome = (String) comboProdutos.getSelectedItem();
@@ -96,7 +92,7 @@ public class PainelPedidos extends JPanel {
         try {
             quantidade = Integer.parseInt(campoQuantidade.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Quantidade invalida!");
+            JOptionPane.showMessageDialog(this, "Quantidade inválida!");
             return;
         }
 
@@ -112,11 +108,12 @@ public class PainelPedidos extends JPanel {
         produto.reduzirEstoque(quantidade);
 
         ItemPedido item = new ItemPedido(produto, quantidade);
+
         pedidoAtual.adicionarItem(item);
 
         areaPedido.append(
                 item.toString()
-                        + " | Stock: "
+                        + " | Stock restante: "
                         + produto.getEstoque()
                         + "\n"
         );
@@ -124,7 +121,7 @@ public class PainelPedidos extends JPanel {
         campoQuantidade.setText("");
     }
 
-    // =========================
+    // ===== FINALIZE =====
     private void finalizarPedido() {
 
         if (pedidoAtual.getItens().isEmpty()) {
