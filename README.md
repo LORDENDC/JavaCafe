@@ -24,7 +24,6 @@ Permite gerenciar produtos, controlar estoque e registrar vendas de forma simple
 ---
 
 ##  Estrutura do projeto
-...
 JavaCafe/
 │
 ├── src/
