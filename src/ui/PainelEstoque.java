@@ -6,11 +6,10 @@ import service.GerenciadorEstoque;
 import javax.swing.*;
 import java.awt.*;
 
-// Painel responsável por mostrar e gerenciar o estoque
 public class PainelEstoque extends JPanel {
 
     private GerenciadorEstoque estoque;
-    private JTextArea areaTexto;
+    private JPanel panel;
 
     public PainelEstoque(GerenciadorEstoque estoque) {
 
@@ -18,22 +17,44 @@ public class PainelEstoque extends JPanel {
 
         setLayout(new BorderLayout());
 
-        // área de texto para mostrar produtos
-        areaTexto = new JTextArea();
-        areaTexto.setEditable(false);
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        add(new JScrollPane(areaTexto), BorderLayout.CENTER);
+        add(new JScrollPane(panel), BorderLayout.CENTER);
 
         atualizarLista();
     }
 
-    // atualiza a lista de produtos na tela
     public void atualizarLista() {
 
-        areaTexto.setText("");
+        panel.removeAll();
 
         for (Produto p : estoque.getProdutos()) {
-            areaTexto.append(p.toString() + "\n");
+
+            JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+            // IMAGE
+            String imgPath = "images/" + p.getNome().toLowerCase().replace(" ", "") + ".jpg";
+
+            ImageIcon icon = new ImageIcon(imgPath);
+            Image img = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+
+            JLabel imgLabel = new JLabel(new ImageIcon(img));
+
+            // TEXT
+            JLabel text = new JLabel(
+                    p.getNome() +
+                    " | €" + p.getPreco() +
+                    " | Stock: " + p.getEstoque()
+            );
+
+            item.add(imgLabel);
+            item.add(text);
+
+            panel.add(item);
         }
+
+        panel.revalidate();
+        panel.repaint();
     }
 }
