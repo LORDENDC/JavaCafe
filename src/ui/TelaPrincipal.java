@@ -18,7 +18,8 @@ public class TelaPrincipal extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        setLayout(new GridLayout(1, 2));
+        // FIX LAYOUT
+        setLayout(new GridLayout(1, 2, 10, 10));
 
         add(new PainelEstoque(estoque));
         add(new PainelPedidos(estoque));
