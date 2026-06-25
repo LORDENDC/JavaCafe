@@ -8,7 +8,7 @@ public class TelaPrincipal extends JFrame {
 
         setTitle("Java Café");
         setSize(800, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         setLayout(new GridLayout(1, 2));
