@@ -38,12 +38,22 @@ public class PainelEstoque extends JPanel {
                     .replace(" ", "")
                     + ".jpg";
 
-            ImageIcon icon = new ImageIcon("images/" + fileName);
+            // FIX IMAGE PATH (robuste)
+            java.net.URL imgURL =
+                    getClass().getClassLoader().getResource("images/" + fileName);
 
-            Image img = icon.getImage()
-                    .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+            JLabel imgLabel;
 
-            JLabel imgLabel = new JLabel(new ImageIcon(img));
+            if (imgURL != null) {
+                ImageIcon icon = new ImageIcon(imgURL);
+
+                Image img = icon.getImage()
+                        .getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+
+                imgLabel = new JLabel(new ImageIcon(img));
+            } else {
+                imgLabel = new JLabel("[no image]");
+            }
 
             JLabel text = new JLabel(
                     p.getNome()
