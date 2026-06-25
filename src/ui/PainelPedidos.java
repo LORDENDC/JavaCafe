@@ -32,11 +32,13 @@ public class PainelPedidos extends JPanel {
 
         comboProdutos = new JComboBox<>();
 
-        if (estoque.getProdutos() != null) {
+        // SAFE LOAD (évite null crash)
+        if (estoque != null && estoque.getProdutos() != null) {
             for (Produto p : estoque.getProdutos()) {
                 comboProdutos.addItem(p.getNome());
             }
         }
+
         campoQuantidade = new JTextField(5);
 
         JButton btnAdicionar = new JButton("Adicionar");
