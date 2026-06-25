@@ -31,7 +31,7 @@ public class PainelPedidos extends JPanel {
 
         setLayout(new BorderLayout(10, 10));
 
-        // ===== TOP =====
+        // TOP
         JPanel topo = new JPanel();
 
         comboProdutos = new JComboBox<>();
@@ -52,28 +52,36 @@ public class PainelPedidos extends JPanel {
 
         add(topo, BorderLayout.NORTH);
 
-        // ===== CENTER =====
+        // CENTER
         areaPedido = new JTextArea();
         areaPedido.setEditable(false);
+
         add(new JScrollPane(areaPedido), BorderLayout.CENTER);
 
-        // ===== IMAGES =====
+        // IMAGES (FIXED)
         JPanel imgPanel = new JPanel(new FlowLayout());
 
-        imgPanel.add(createImage("images/expresso.jpg"));
-        imgPanel.add(createImage("images/cappuccino.jpg"));
-        imgPanel.add(createImage("images/croissant.jpg"));
+        imgPanel.add(createImage("expresso.jpg"));
+        imgPanel.add(createImage("cappuccino.jpg"));
+        imgPanel.add(createImage("croissant.jpg"));
 
         add(imgPanel, BorderLayout.SOUTH);
 
-        // ===== ACTIONS =====
+        // ACTIONS
         btnAdd.addActionListener(e -> adicionar());
         btnFinal.addActionListener(e -> finalizar());
     }
 
-    private JLabel createImage(String path) {
+    private JLabel createImage(String fileName) {
 
-        ImageIcon icon = new ImageIcon(path);
+        java.net.URL imgURL =
+                getClass().getClassLoader().getResource("images/" + fileName);
+
+        if (imgURL == null) {
+            return new JLabel("[no image]");
+        }
+
+        ImageIcon icon = new ImageIcon(imgURL);
 
         Image img = icon.getImage()
                 .getScaledInstance(120, 120, Image.SCALE_SMOOTH);
@@ -105,17 +113,16 @@ public class PainelPedidos extends JPanel {
 
         p.reduzirEstoque(qtd);
 
-        ItemPedido item = new ItemPedido(p, qtd);
-        pedidoAtual.adicionarItem(item);
+        pedidoAtual.adicionarItem(new ItemPedido(p, qtd));
 
         areaPedido.append(
-                item.toString()
-                        + " | Stock: "
-                        + p.getEstoque()
+                p.getNome()
+                        + " x" + qtd
+                        + " | Stock: " + p.getEstoque()
                         + "\n"
         );
 
-        // 🔥 IMPORTANT : UPDATE LEFT PANEL
+        // UPDATE LEFT PANEL (IMPORTANT)
         painelEstoque.atualizarLista();
 
         campoQuantidade.setText("");
