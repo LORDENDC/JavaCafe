@@ -1,31 +1,19 @@
-package ui;
-
-import javax.swing.*;
-import java.awt.*;
-
-// Tela principal da aplicação
 public class TelaPrincipal extends JFrame {
 
-    public TelaPrincipal() {
+    private GerenciadorEstoque estoque;
+
+    public TelaPrincipal(GerenciadorEstoque estoque) {
+
+        this.estoque = estoque;
 
         setTitle("Java Café");
-        setSize(600, 400);
+        setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // layout simples
-        setLayout(new BorderLayout());
+        setLayout(new GridLayout(1, 2));
 
-        // título
-        JLabel titulo = new JLabel("Java Café - Sistema POS", SwingConstants.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 20));
-
-        add(titulo, BorderLayout.NORTH);
-
-        // painel central
-        JPanel painel = new JPanel();
-        painel.add(new JLabel("Sistema em construção..."));
-
-        add(painel, BorderLayout.CENTER);
+        add(new PainelEstoque(estoque));
+        add(new PainelPedidos(estoque));
     }
 }
